@@ -49,7 +49,7 @@ export const config = {
     }),
   ],
 callbacks:{
-    async session({session,user,trigger,token}){
+    async session({session,user,trigger,token}:any){
      //set user is from token 
      session.user.id = token.sub;
      //if there is update set the user name 

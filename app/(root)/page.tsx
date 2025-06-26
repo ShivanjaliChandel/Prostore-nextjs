@@ -1,6 +1,7 @@
 
 import ProductList from "../products/[id]/product-list";
 import { getLatestProducts } from "@/lib/actions/product.actions";
+
 const Homepage = async ()=>{
     const latestproducts = await getLatestProducts();
     return(
