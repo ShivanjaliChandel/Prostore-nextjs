@@ -1,16 +1,16 @@
-import { Card , CardHeader, CardContent, CardTitle,CardDescription } from "@/components/ui/card";
+import { Card , CardHeader, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
 import Link from 'next/link';
 import { Metadata } from "next";
 import Image from 'next/image';
-import CredentialsSignInForm from "./credentials-signin-form";
 import { auth } from "@/app/(root)/auth";
 import { redirect } from "next/navigation";
+import SignUpForm from "./sign-up-form";
 
 export const metadata:Metadata={
-    title:'Sign In',
+    title:'Sign up',
 };
 
-const SignInpage= async(props:{
+const SignUppage= async(props:{
     searchParams:Promise<{
         callbackUrl:string
     }>
@@ -37,14 +37,14 @@ return <div className="w-full max-w-md mx-auto">
                        priority ={true}               
                      />
             </Link>
-           <CardTitle className="text-center">sign in </CardTitle>
-           <CardDescription className="text-center">sign in to your account </CardDescription>
+           <CardTitle className="text-center">create account </CardTitle>
+           <CardDescription className="text-center">Enter your information for signup form  </CardDescription>
       </CardHeader>
            <CardContent className="space-y-4">
-           <CredentialsSignInForm/>
+         <SignUpForm></SignUpForm>
            </CardContent>
     </Card> 
 
 </div>
 }
-export default SignInpage;
+export default SignUppage;
