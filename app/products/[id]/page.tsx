@@ -1,10 +1,8 @@
 // app/products/[id]/page.tsx
 'use client';
-import { notFound } from 'next/navigation';
 import { useCart } from '@/app/context/cartContext';
 import { useEffect, useState } from 'react';
 import { useParams , useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { DeleteIcon } from 'lucide-react';
 
 interface Product {
@@ -18,7 +16,7 @@ interface Product {
 export default function ProductPage() {
   const { id } = useParams();
     const router = useRouter(); 
-  const { cart,addToCart ,removeFromCart  } = useCart();
+  const {addToCart ,removeFromCart  } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
 
 
@@ -30,7 +28,7 @@ export default function ProductPage() {
 
   if (!product) return <p className="p-6">Loading...</p>;
 
-    const isInCart = cart.some(item => item.id === product.id);
+    // const isInCart = cart.some(item => item.id === product.id);
   const handleAddToCart = () => {
     addToCart(product);
     router.push('/cart'); // ← Navigate to cart page

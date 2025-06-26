@@ -1,4 +1,4 @@
-import sampleData from "@/db/sample-data";
+
 import ProductList from "../products/[id]/product-list";
 import { getLatestProducts } from "@/lib/actions/product.actions";
 
