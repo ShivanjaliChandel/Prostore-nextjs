@@ -12,7 +12,7 @@ const ProductCard = ({product}:{product:Product;}) => {
        <Image src={product.images[0]} alt={product.name} height={300} width={300}></Image>
        </Link>
    </CardHeader>
-        <CardContent className="p-4 flex flex-col gap-2 text-center">
+        <CardContent className="p-4 flex flex-col gap-z text-center">
         <div className="text-xs">{product.brand}</div>
         <Link href={`/product/${product.slug}`}>
         <h2 className="text-sm font-medium">{product.name}</h2>
@@ -30,5 +30,5 @@ const ProductCard = ({product}:{product:Product;}) => {
     </Card>
   );
 };
-
+z
 export default ProductCard;

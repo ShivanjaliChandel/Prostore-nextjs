@@ -49,7 +49,7 @@ export const config = {
     }),
   ],
 callbacks:{
-    async session({session,user,trigger,token}:any){
+    async session({session,user,trigger,token}){
      //set user is from token 
      session.user.id = token.sub;
      //if there is update set the user name 
@@ -60,6 +60,4 @@ callbacks:{
     }
   }
 }satisfies NextAuthConfig;
-
-// const { handlers, auth, signIn, signOut } = NextAuth(config);
-export const { handlers, auth, signIn, signOut } = NextAuth(config);;
+export const { handlers, auth, signIn, signOut } = NextAuth(config);
