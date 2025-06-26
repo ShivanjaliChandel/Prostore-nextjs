@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { signInDefaultValues } from "@/lib/constants";
 import Link from "next/link";
 import { useActionState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
 import { signInWithCredentials } from "@/lib/actions/user.actions";
 import { useSearchParams } from "next/navigation";
 

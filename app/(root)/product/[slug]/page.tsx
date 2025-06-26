@@ -1,11 +1,8 @@
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/button";
 import { getProductBySlug } from "@/lib/actions/product.actions";
 import { notFound } from "next/navigation";
-import { Card ,CardHeader} from "@/components/ui/card";
+import { Card} from "@/components/ui/card";
 import ProductImages from "@/app/products/product-images";
-import ProductPage from "@/app/products/[id]/page";
 import ProductPrice from "@/app/products/product-price";
 
 
@@ -29,22 +26,17 @@ return <>
             <p>Product Brand:- {product.brand}</p>
             <p> Product Category:-{product.category}</p>
               <h1 className="h3-bold">{product.name}</h1>
-                  <p>{product.rating} of {product.numReviews}numReviews</p>
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                   <div className="w-24 rounded-full bg-green-100 text-green-700 px-5 py-2">${product.price}</div>
+           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                       <ProductPrice value={Number(product.price)} className="text-red-500"></ProductPrice>
                   </div>
             </div>
              <div className="mt-10">
         <p className="font-semibold">Description</p>
         {product.description}
-          
-            {/* <button>Add to Cart</button> */}
-         
             
     </div>
         </div>
-
-        {/* //action column */}
+    {/* //action column */}
    <div>
     <Card>
      <div className='p-4'>

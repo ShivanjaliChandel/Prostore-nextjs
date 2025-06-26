@@ -1,11 +1,9 @@
 import { Card , CardHeader, CardContent } from "@/components/ui/card";
-import { APP_NAME } from "@/lib/constants";
 import Link from 'next/link';
 import { Metadata } from "next";
 import Image from 'next/image';
 import CredentialsSignInForm from "./credentials-signin-form";
 import { auth } from "@/app/(root)/auth";
-import { Redirect } from "next";
 import { redirect } from "next/navigation";
 
 export const metadata:Metadata={

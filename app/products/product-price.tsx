@@ -1,9 +1,9 @@
 
-const ProductPrice = ({value, className}:{value:number; className?:string;})=>{
+const ProductPrice = ({value}:{value:number; className?:string;})=>{
 // ensure two decimal number
 const stringValue = value.toFixed(2);
 //get the int value 
- const [intValue, floatValue] = stringValue.split('.'); 
+ const [intValue] = stringValue.split('.'); 
  
 return (
 <p className = "price">
