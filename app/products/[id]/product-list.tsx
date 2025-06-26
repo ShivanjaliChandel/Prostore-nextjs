@@ -1,25 +1,23 @@
 import ProductCard from "../product-card";
+import { Product } from "@/types";
 
-interface Props {
-  data: any[];
-  title: string;
+const ProductList = ({ data, title, limit } : {data: Product[]; title?: string; limit?:number }) => {
+
+    const limitedData = limit ? data.slice(0, limit) : data;
+
+    return ( 
+    <div className="my-10">
+        <h2 className="h2-bold mb-4">{title}</h2>
+        {data.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {limitedData.map((product: Product) => (
+                    <ProductCard key={product.slug} product={product} />
+                ))}
+            </div>
+        ) : (
+            <p>No products found.</p>
+        )}
+    </div> );
 }
-
-const ProductList = ({ data, title }: Props) => {
-  if (!data || data.length === 0) {
-    return <p>No products available.</p>;
-  }
-
-  return (
-    <div>
-      <h2 className="mx-auto text-xl font-bold mb-4 text-center">{title}</h2>
-      <div className="mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-        {data.map((product) => (
-          <ProductCard key={product.slug} product={product} />
-        ))}
-      </div>
-    </div>
-  );
-};
-
+ 
 export default ProductList;

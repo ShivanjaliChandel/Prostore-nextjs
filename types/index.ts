@@ -3,5 +3,7 @@ import { insertProductSchema } from '@/lib/constants/validators';
 export type Product = z.infer<typeof insertProductSchema> & {
     id:string;
     rating:string;
+    brand:string;
      createdAt:Date;
+     
 };
