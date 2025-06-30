@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../context/cartContext';
 
@@ -40,9 +41,11 @@ export default function CollectionPage() {
         {products.map((product) => (
           <div key={product.id} className="border rounded-2xl shadow p-4 hover:shadow-lg transition cursor-pointer">
             <Link href={`/products/${product.id}`}>
-              <img
+              <Image
                 src={product.image}
                 alt={product.title}
+                width={300}
+                height={160}
                 className="w-full h-40 object-contain mb-4"
               />
               <h2 className="text-lg font-semibold">{product.title}</h2>

@@ -1,11 +1,14 @@
 
 import { getProductBySlug } from "@/lib/actions/product.actions";
 import { notFound } from "next/navigation";
-import { Card} from "@/components/ui/card";
+import { Card, CardContent} from "@/components/ui/card";
 import ProductImages from "@/app/products/product-images";
 import ProductPrice from "@/app/products/product-price";
+// import { Plus } from "lucide-react";
+import AddToCart from "@/app/products/add-to-cart";
 
-
+import { getMycart } from "@/lib/actions/cart.actions";
+    
 const ProductDetailPage = async (props:{
     
     params:Promise<{slug:string}>
@@ -13,6 +16,9 @@ const ProductDetailPage = async (props:{
  const {slug} = await props.params;
  const product = await getProductBySlug(slug);
  if(!product) notFound();
+  const cart = getMycart();
+
+
 return <> 
 <section>
     <div className="grid grid-cols-1 md:grid-cols-5">
@@ -39,15 +45,40 @@ return <>
     {/* //action column */}
    <div>
     <Card>
-     <div className='p-4'>
-        <div className="mb- flex justify-between">
+     <CardContent className='p-4'>
+        <div className="mb-2 flex justify-between">
            
               <div>
-               
+               price
+              </div>
+              <div>
+                <ProductPrice value ={Number(product.price)}/>
               </div>
         </div>
+        <div className="mb-2 flex justify-between">
+         <div>status</div>
+         {product.stock > 0 ? (
+           <badge variant="outline">in stock </badge>
+         ):(
+            <badge variant="destructive">Out of Stock</badge>
+         )
 
-     </div>
+         }
+        </div>
+        {product.stock>0 && (
+            <div className="flex-center">
+                <AddToCart item={{
+                    productId:product.id,
+                    name:product.name,
+                    slug:product.slug,
+                    price:product.price,
+                    qty:1,
+                    image:product.images![0]
+                }}></AddToCart>
+            </div>
+        )}
+            
+     </CardContent>
     </Card>
    </div>
 

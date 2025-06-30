@@ -26,9 +26,29 @@ export const signUpFormSchema = z.object({
     name: z.string().min(3,'Name mustbe atleast 3 characters'),
     email: z.string().email('Invalid emial address'),
     password:z.string().min(6,'password must be atleast 6 characters'),
-    confirmpassword:z.string().min(6,'confirmpassword must be atleast 6 characters'),
-}).refine((data)=>data.password === data.confirmpassword,{
+    confirmPassword:z.string().min(6,'confirmpassword must be atleast 6 characters'),
+}).refine((data)=>data.password === data.confirmPassword,{
     message:"password dont match",
     path:['confirmPassword'],
 });
 
+//cart schema
+export const cartItemSchema = z.object({
+    productId:z.string().min(1,'product is required'),
+    name:z.string().min(1,'Name is required is required'),
+    slug:z.string().min(1,'Slug is required is required'),
+   qty:z.number().int().nonnegative('Quantity must be a positive'),
+   image:z.string().min(1,'image is required'),
+   price:currency
+});
+
+export const insertcartSchema = z.object({
+    items:z.array(cartItemSchema),
+    itemsprice:currency,
+    totalPrice:currency,
+    shippingPrice:currency,
+    taxPrice:currency,
+    sessionCartId:z.string().min(1,'Session cart id is required'),
+    userId:z.string().optional().nullable(),
+
+})

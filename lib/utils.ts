@@ -1,17 +1,36 @@
 // import { Decimal } from "@prisma/client/runtime/library";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { object } from "zod"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+// format errors
+export async function formatError(error: unknown): Promise<string> {
+  if (error && typeof error === 'object' && 'name' in error) {
+    if (error.name === 'ZodError' && 'errors' in error) {
+      // handle zod error
+      const zodError = error as { errors: Array<{ message: string }> };
+      const fieldErrors = zodError.errors.map((err) => err.message);
+      return fieldErrors.join('. ');
+    } else if (error.name === 'PrismaClientKnownRequestError' && 'code' in error) {
+      // handle prisma error
+      const prismaError = error as { code: string };
+      if (prismaError.code === 'P2002') {
+        return 'A record with this information already exists';
+      }
+    }
+  }
+  
+  // handle other errors
+  return error instanceof Error ? error.message : 'An unknown error occurred';
+}
 
-// convrt prisma object into regular js object
-// export function convertToPlainObject<T>(value: T):T{
-// return JSON.parse(JSON.stringify(value));
-// }
+// convert prisma object into regular js object
+export function convertToPlainObject<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value));
+}
 
 //format number with decimal places
 
@@ -20,17 +39,17 @@ export function cn(...inputs: ClassValue[]) {
 // return decimal? `${int}.${decimal.padEnd(2,'0')` : `${int}.00`
 //  }
 
-//format errors
-//eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function formatError(error:any) {
-if(error.name==='ZodErrpr'){
-//handle zod error
-const fieldErrors = Object.keys(error.errors).map((field)=>error.errors[field].message);
-return fieldErrors.join('. ');
-}else if(error.name === 'PrismaClientKnownRequestError' && error.code === 'P2002'){
-  //handle zod error
-}else{
-  //handle other errors
-}
+
+
+//round number to 2 decimal places
+export function round2(value:number| string ) {
+  if(typeof value === 'number'){
+   return Math.round((value + Number.EPSILON) * 100 )/100;
+  }else if(typeof value === 'string')
+ {
+  return Math.round((Number(value)+ Number.EPSILON) * 100 )/100;
   
+}else{
+ throw new Error('value is not a number pr strring')
+}
 }
