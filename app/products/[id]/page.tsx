@@ -1,15 +1,14 @@
 // app/products/[id]/page.tsx
 'use client';
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
-import { Product } from '@/types';
+import { Product, CartItem } from '@/types';
 import AddToCart from '../add-to-cart';
 import { getMycart } from '@/lib/actions/cart.actions';
 
 export default function ProductPage() {
   const { id } = useParams();
-  const router = useRouter();
   const [product, setProduct] = useState<Product | null>(null);
   const [cart, setCart] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -41,7 +40,7 @@ export default function ProductPage() {
   if (!product) return <p className="p-6">Product not found</p>;
 
   // Check if item is in cart
-  const isInCart = cart?.Items?.some((item: any) => item.productId === product.id);
+  const isInCart = cart?.Items?.some((item: CartItem) => item.productId === product.id);
 
   return (
     <section className="p-6">

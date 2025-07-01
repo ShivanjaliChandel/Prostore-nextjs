@@ -17,7 +17,7 @@ const calcPrice = (items: CartItem[]) => {
      taxPrice = round2(itemsPrice * 0.15),
      totalPrice = round2(itemsPrice + shippingPrice + taxPrice);
     return {
-        ItemsPrice: itemsPrice.toFixed(2), 
+        itemsprice: itemsPrice.toFixed(2), 
         shippingPrice: shippingPrice.toFixed(2), 
         taxPrice: taxPrice.toFixed(2), 
         totalPrice: totalPrice.toFixed(2)
@@ -100,7 +100,7 @@ export async function addItemToCart(data: CartItem) {
                 where: { id: cart.id },
                 data: {
                     Items: existingItems,
-                    ItemsPrice: prices.ItemsPrice,
+                    ItemsPrice: prices.itemsprice,
                     totalPrice: prices.totalPrice,
                     shippingPrice: prices.shippingPrice,
                     taxPrice: prices.taxPrice,
@@ -165,12 +165,6 @@ export async function removeItemFromCart(itemId:string){
         const session = await auth();
         const userId = session?.user?.id ? (session?.user.id as string) : undefined;
 
-        // get product from database
-        const product = await prisma.product.findFirst({
-            where:{id:itemId}
-        });
-        if(!product) throw new Error('product not found');
-
         //get user cart from database
         const cart = await prisma.cart.findFirst({
             where: userId ? { userId: userId } : { sessionCartId: sessionCartId }
@@ -179,8 +173,10 @@ export async function removeItemFromCart(itemId:string){
         
         //remove item from cart
         const existingItems = cart.Items as CartItem[];
-        const updatedItems = existingItems.filter((item)=>item.productId !== itemId);
         const deletedItem = existingItems.find((item)=>item.productId === itemId);
+        const updatedItems = existingItems.filter((item)=>item.productId !== itemId);
+
+        if (!deletedItem) throw new Error('item not found in cart');
 
         const prices = calcPrice(updatedItems);
 
@@ -188,7 +184,7 @@ export async function removeItemFromCart(itemId:string){
             where:{id:cart.id},
             data:{
                 Items:updatedItems,
-                ItemsPrice: prices.ItemsPrice,
+                ItemsPrice: prices.itemsprice,
                 totalPrice: prices.totalPrice,
                 shippingPrice: prices.shippingPrice,
                 taxPrice: prices.taxPrice,
@@ -200,11 +196,11 @@ export async function removeItemFromCart(itemId:string){
             
         return {
             success:true,
-            message:`${deletedItem?.name} removed from cart`,
+            message:`${deletedItem.name} removed from cart`,
             cart: convertToPlainObject({
                 ...cart,
                 Items: updatedItems,
-                ItemsPrice: prices.ItemsPrice,
+                ItemsPrice: prices.itemsprice,
                 totalPrice: prices.totalPrice,
                 shippingPrice: prices.shippingPrice,
                 taxPrice: prices.taxPrice,
@@ -257,7 +253,7 @@ export async function updateItemQuantity(itemId: string, newQty: number) {
             where: { id: cart.id },
             data: {
                 Items: existingItems,
-                ItemsPrice: prices.ItemsPrice,
+                ItemsPrice: prices.itemsprice,
                 totalPrice: prices.totalPrice,
                 shippingPrice: prices.shippingPrice,
                 taxPrice: prices.taxPrice,
@@ -321,7 +317,7 @@ export async function decreaseItemQuantity(itemId: string) {
             where: { id: cart.id },
             data: {
                 Items: existingItems,
-                ItemsPrice: prices.ItemsPrice,
+                ItemsPrice: prices.itemsprice,
                 totalPrice: prices.totalPrice,
                 shippingPrice: prices.shippingPrice,
                 taxPrice: prices.taxPrice,

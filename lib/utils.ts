@@ -53,3 +53,27 @@ export function round2(value:number| string ) {
  throw new Error('value is not a number pr strring')
 }
 }
+
+
+const currencyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+})
+
+//format currency using formater above
+// export function formatCurrency(value: number) {
+//   return currencyFormatter.format(value)
+// }
+
+
+export function formatCurrency(amount:number | string | null){
+  if(typeof amount === 'number'){
+    return currencyFormatter.format(amount)
+  }else if(typeof amount === 'string'){
+    return currencyFormatter.format(Number(amount))
+  }else{
+    return '0.00'
+  }
+}

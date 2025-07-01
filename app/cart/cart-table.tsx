@@ -5,6 +5,7 @@ import { Button } from "@/components/button"
 import { removeItemFromCart, updateItemQuantity, decreaseItemQuantity } from "@/lib/actions/cart.actions"
 import { useState } from "react"
 import { toast } from "sonner"
+import { formatCurrency } from "@/lib/utils"
 
 const CartTable = ({ cart }: { cart: Cart }) => {
   const [loading, setLoading] = useState<string | null>(null)
@@ -19,7 +20,7 @@ const CartTable = ({ cart }: { cart: Cart }) => {
       } else {
         toast.error(result.message)
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to remove item")
     } finally {
       setLoading(null)
@@ -36,7 +37,7 @@ const CartTable = ({ cart }: { cart: Cart }) => {
       } else {
         toast.error(result.message)
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to update quantity")
     } finally {
       setLoading(null)
@@ -53,7 +54,7 @@ const CartTable = ({ cart }: { cart: Cart }) => {
       } else {
         toast.error(result.message)
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to update quantity")
     } finally {
       setLoading(null)

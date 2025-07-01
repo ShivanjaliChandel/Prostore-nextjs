@@ -1,7 +1,7 @@
 'use client';
 import { Button } from "@/components/button";
 import { useRouter } from "next/navigation";
-import { Cart, CartItem } from "@/types";
+import { CartItem } from "@/types";
 import { Plus, Minus } from "lucide-react";
 import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart.actions";
 import { toast } from "sonner";
@@ -12,7 +12,7 @@ interface AddToCartProps {
   isInCart: boolean;
 }
 
-const AddToCart = ({ item, cart, isInCart }: AddToCartProps) => {
+const AddToCart = ({ item, cart }: AddToCartProps) => {
   const router = useRouter();
 
   const handleAddToCart = async () => {
@@ -47,7 +47,7 @@ const AddToCart = ({ item, cart, isInCart }: AddToCartProps) => {
   };
 
   // Find existing item in cart - using Items since that's what getMycart returns
-  const existingItem = cart?.Items?.find((cartItem: any) => cartItem.productId === item.productId);
+  const existingItem = cart?.Items?.find((cartItem: CartItem) => cartItem.productId === item.productId);
 
   return existingItem ? (
     <div className="flex items-center gap-2">

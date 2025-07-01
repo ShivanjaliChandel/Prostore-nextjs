@@ -1,24 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useCart } from '../context/cartContext';
-
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-}
+import { Product } from '@/types';
+import { addItemToCart } from '@/lib/actions/cart.actions';
+import { toast } from 'sonner';
 
 export default function CollectionPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const router = useRouter();
-  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -29,9 +21,29 @@ export default function CollectionPage() {
     fetchProducts();
   }, []);
 
-  const handleAddToCart = (product: Product) => {
-    addToCart(product);
-    router.push('/cart');
+  const handleAddToCart = async (product: Product) => {
+    try {
+      const cartItem = {
+        productId: product.id,
+        name: product.name,
+        slug: product.slug,
+        qty: 1,
+        image: product.images[0],
+        price: product.price.toString()
+      };
+
+      const result = await addItemToCart(cartItem);
+      
+      if (result.success) {
+        toast.success(`${product.name} added to cart!`);
+        router.push('/cart');
+      } else {
+        toast.error("Failed to add to cart.");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong.");
+    }
   };
 
   return (
@@ -42,17 +54,14 @@ export default function CollectionPage() {
           <div key={product.id} className="border rounded-2xl shadow p-4 hover:shadow-lg transition cursor-pointer">
             <Link href={`/products/${product.id}`}>
               <Image
-                src={product.image}
-                alt={product.title}
+                src={product.images[0]}
+                alt={product.name}
                 width={300}
                 height={160}
                 className="w-full h-40 object-contain mb-4"
               />
-              <h2 className="text-lg font-semibold">{product.title}</h2>
+              <h2 className="text-lg font-semibold">{product.name}</h2>
               <p className="text-gray-600">${product.price}</p>
-              <p className="text-sm text-gray-500 mt-2">
-                {product.description.slice(0, 80)}...
-              </p>
             </Link>
             <button
               onClick={() => handleAddToCart(product)}

@@ -64,3 +64,14 @@ export async function signUpUser(prevState:unknown,formData:FormData){
   return{success:false, message:formatError(error)};
  }
 }
+
+
+//get user by id
+export async function getUserById(id:string){
+    const user = await prisma.user.findUnique({
+        where:{
+            id:id,
+        },
+    });
+    return user;
+}

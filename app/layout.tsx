@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import { ReactNode } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { CartProvider } from './context/cartContext'
 import { Toaster } from '@/components/ui/sonner'
 
 
@@ -17,11 +16,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body>
         <Header />
-     
-     <CartProvider>{children}</CartProvider>
-     <Toaster/>
-        
-         <Footer /> 
+        {children}
+        <Toaster/>
+        <Footer /> 
       </body>
     </html>
   )
