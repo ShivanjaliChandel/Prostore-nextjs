@@ -6,6 +6,32 @@ import { prisma } from '@/db/prisma';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { compareSync } from 'bcrypt-ts-edge';
 import type { NextAuthConfig } from 'next-auth';
+import type { JWT } from 'next-auth/jwt';
+
+// Extend the built-in session types
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      name?: string | null;
+      email?: string | null;
+      role: string;
+    }
+  }
+  
+  interface User {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    role: string;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    role: string;
+  }
+}
 
 export const config = {
   pages: {
@@ -51,8 +77,8 @@ export const config = {
   callbacks: {
     async session({ session, user, trigger, token }) {
       // set user is from token 
-      if (token) {
-        session.user.id = token.sub;
+      if (token && token.sub) {
+        session.user.id = token.sub as string;
         session.user.role = token.role;
         session.user.name = token.name;
       }

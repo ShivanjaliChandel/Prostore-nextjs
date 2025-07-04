@@ -5,6 +5,7 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { hashSync } from "bcrypt-ts-edge";
 import { prisma } from "@/db/prisma";
 import { formatError } from "../utils";
+import { redirect } from "next/navigation";
 // sign in the user with credentials 
 export async function signInWithCredentials(prevState:unknown,formData:FormData){
  try{
@@ -27,6 +28,7 @@ export async function signInWithCredentials(prevState:unknown,formData:FormData)
 
 export async function signOutUser(){
     await signOut();
+    redirect("/"); 
 }
 
 //signup user 
@@ -67,11 +69,31 @@ export async function signUpUser(prevState:unknown,formData:FormData){
 
 
 //get user by id
-export async function getUserById(id:string){
-    const user = await prisma.user.findUnique({
+export async function getUserById(userId:string){
+    const user = await prisma.user.findFirst({
         where:{
-            id:id,
+            id:userId,
         },
     });
+    if(!user)
+      throw new Error('User not found');
     return user;
+}
+
+//save shipping address
+export async function saveShippingAddress(userId: string, address: any) {
+    try {
+        const updatedUser = await prisma.user.update({
+            where: {
+                id: userId,
+            },
+            data: {
+                address: address,
+            },
+        });
+        return { success: true, user: updatedUser };
+    } catch (error) {
+        console.error('Error saving shipping address:', error);
+        return { success: false, error: formatError(error) };
+    }
 }

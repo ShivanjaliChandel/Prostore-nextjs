@@ -1,5 +1,5 @@
 // components/Header.tsx
-'use client'
+// 'use client'
 
 import Link from 'next/link'
 import Image from 'next/image'
@@ -37,10 +37,10 @@ export default function Header() {
           </Link>
        
         </div>
-         <Link href='/sign-in'>
+         {/* <Link href='/sign-in'>
          <UserIcon>Sign in</UserIcon>
-       </Link>
-       <UserButton></UserButton>
+       </Link> */}
+       <UserButton />
       </div>
     </header>
   )

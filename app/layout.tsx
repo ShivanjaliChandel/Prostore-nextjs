@@ -4,7 +4,7 @@ import { ReactNode } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Toaster } from '@/components/ui/sonner'
-
+import { SessionProvider } from 'next-auth/react'
 
 export const metadata: Metadata = {
   title: 'My Next App',
@@ -16,7 +16,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body>
         <Header />
+        <SessionProvider>
         {children}
+        </SessionProvider>
         <Toaster/>
         <Footer /> 
       </body>
